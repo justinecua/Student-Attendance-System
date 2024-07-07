@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} Student Attendance System {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="https://unpkg.com/htmx.org@1.9.11" integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <div id="MainContent">
+    {% block content %}
+    
+    {% endblock %}
+
+    {% if messages %}
+    <ul id="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    </div>
+    <script>
+        function confirmDelete(studentId) {
+            if (confirm("Are you sure you want to delete this student?")) {
+                window.location.href = "delete/" + studentId;
+            }
+        }
+        
+        function FadeIn() {
+            var fadeBox = document.getElementById('messages');
+            if (fadeBox != null) {
+                fadeBox.style.display = 'flex';
+                setTimeout(function () {
+                    fadeBox.style.opacity = '1'; 
+                }, 100)
+
+                setTimeout(function () {
+                    fadeBox.style.opacity = '0'; 
+                }, 3000);
+            }
+        }
+
+    
+    </script>
+</body>
+</html>

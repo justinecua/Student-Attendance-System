@@ -1,0 +1,59 @@
+{% extends "master.html" %}
+{% block content %}
+
+    <main id="courses-table">
+        <div id="overlay"></div>
+        <div class="home-container">
+            <h2>Student Attendance System</h2>
+            <div class="HC-Container">
+                <div class="SC_Top">
+                    <div class="NavBar">
+                        <div><a href="/"><h2>Home &nbsp;</h2></a></div>
+                        <span>/</span>
+                        <div><a href="/Courses"><h2>&nbsp; Courses</h2></a></div>
+                    </div>
+                    <a hx-get="/addCourse" hx-target="#overlay" ><button class="Add-btn" type="button">Add Course</button></a>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                        <th></th>
+                        <th>Course</th>
+                        <th>Description</th>
+                        {% comment %}
+                        <th>Options</th>
+                        {% endcomment %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        {% for x in list_courses %}
+                        <td class="td-edit">{{ forloop.counter }}</td>
+                        <td class="td-edit">{{ x.course }}</td>
+                        <td class="td-edit">{{ x.description }}</td>
+                        {% comment %}
+                        <td>
+                            <a href="edit/{{x.id}}"><button id="Edit-btn"><img src="static/images/edit.png" alt="">Edit</button></a>
+                            <a href="#" onclick="confirmDelete('{{x.id}}')"><button id="Delete-btn"><img src="static/images/del.png">Delete</button></a>
+                        </td>
+                        {% endcomment %}
+                        </tr>
+                    </tbody>
+                    {%endfor %}
+                </table>
+            </div>
+            <div class="Item-Counter">
+                <span>{{ count_courses }} items</span>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        var Btn = document.querySelector('.Add-btn');
+        Btn.addEventListener("click", function() {
+            var overlay = document.getElementById("overlay");
+            overlay.style.display = "flex";
+        });
+    </script>
+{% endblock %}

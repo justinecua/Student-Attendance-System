@@ -1,0 +1,35 @@
+{% extends "master.html" %}
+{% block content %}
+
+    <form id="course-form" hx-post="{% url 'SaveCourse' %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-target="#courses-table">
+        <main>
+            <div class="add-container">
+                <h3 style="text-align: center; margin-bottom: 3%;">Add Course</h3>
+                
+                <label>Course</label>
+                <input name="course" class="Edit-input"  type="text" value=""></td>
+                <label>Description</label>
+                <input name="description" class="Edit-input"  type="text" value=""></td>
+
+                <button id="AddSubj-btn" type="submit">Submit</button>
+                <a hx-get="/Courses" hx-target="#courses-table"><button id="Cancel-btn" type="button">Cancel</button></a>
+            </div>
+        </main>
+    </form>
+
+    <script>
+        var Cancelbtn = document.getElementById('Cancel-btn');
+
+        Cancelbtn.addEventListener("click", function() {
+            overlay.style.display = "none";
+        });
+
+        var courseform = document.getElementById('course-form'); 
+        courseform.addEventListener("htmx:afterRequest", function(event) {
+            if (event.detail.successful) {
+                overlay.style.display = "none";
+                FadeIn();
+            }
+        });
+    </script>
+{% endblock %}

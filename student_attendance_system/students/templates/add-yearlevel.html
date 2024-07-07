@@ -1,0 +1,33 @@
+{% extends "master.html" %}
+{% block content %}
+
+    <form id="yearlevel-form" hx-post="{% url 'SaveYearLevel' %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-target="#yearlevel-table">
+    <main>
+        <div class="add-container">
+                <h3 style="text-align: center; margin-bottom: 3%;">Add Year Level</h3>
+                
+                <label>Year Level</label>
+                <input name="yearlevel" class="Edit-input"  type="text" value=""></td>
+
+                <button id="AddSubj-btn" type="submit">Submit</button>
+                <a hx-get="/YearLevel" hx-trigger="#yearlevel-table"><button id="Cancel-btn" type="button">Cancel</button></a>
+        </div>
+    </main>
+    </form>
+
+    <script>
+        var Cancelbtn = document.getElementById('Cancel-btn');
+
+        Cancelbtn.addEventListener("click", function() {
+            overlay.style.display = "none";
+        });
+
+        var yearlevelform = document.getElementById('yearlevel-form'); 
+        yearlevelform.addEventListener("htmx:afterRequest", function(event) {
+            if (event.detail.successful) {
+                overlay.style.display = "none";
+                FadeIn();
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "master.html" %}
+{% block content %}
+
+    <form id="student-form" hx-post="{% url 'SaveStudent' %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-target="#student-table">
+        <main>
+            <div class="add-container">
+                    <h3 style="text-align: center; margin-bottom: 5%;">Add Student</h3>
+                    
+                    <div class="AC-1">
+                        <div class="AC-1Top">
+                            <div class="AC-1T">
+                                <label>First Name</label>
+                            </div>
+                            <div class="AC-1T">
+                                <label>Last Name</label>
+                            </div>
+                        </div>
+                        <div class="AC-1Bottom">
+                            <input name="firstname" class="Edit-input"  type="text" value=""></td>
+                            <input name="lastname" class="Edit-input"  type="text" value=""></td>
+                        </div>
+                    </div>
+
+                    <div class="AC-1Top">
+                        <div class="AC-1T">
+                            <label>Birthday</label>
+                        </div>
+                        <div class="AC-1T">
+                            <label>Gender</label>
+                        </div>
+                    </div>
+                    <div class="AC-1Bottom">
+                        <input name="birthday" class="Edit-input"  type="date" value=""></td>
+                        <select name="gender" id="gender_select">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+
+                    <label>Address</label>
+                    <input name="address" class="Edit-input"  type="text" value=""></td>
+                    <label>Contact Number</label>
+                    <input name="contactnumber" class="Edit-input"  type="text" value=""></td>
+                    
+                    <div class="AC-1Top">
+                        <div class="AC-1T">
+                            <label>Course</label>
+                        </div>
+                        <div class="AC-1T">
+                            <label>Year Level</label>
+                        </div>
+                    </div>
+                    <div class="AC-1Bottom">
+                        <select name="course_id" id="course_select">
+                            {% for c in courses_list %}
+                                <option value="{{ c.id }}">{{ c.course }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <select name="yearlevel_id" id="course_select">
+                            {% for levels in select_yearlevel %}
+                                <option value="{{ levels.id }}">{{ levels.yearlevel }}</option>
+                            {% endfor %}    
+                        </select>
+                    </div>
+                    <button id="AddSubj-btn" type="submit">Submit</button>
+                    <a hx-get="/Students" hx-target="#student-table"><button id="Cancel-btn" type="button">Cancel</button></a>
+            </div>
+        </main>
+    </form>
+
+    <script>
+
+        var Cancelbtn = document.getElementById('Cancel-btn');
+
+        Cancelbtn.addEventListener("click", function() {
+            overlay.style.display = "none";
+        });
+
+        var studentform = document.getElementById('student-form'); 
+        studentform.addEventListener("htmx:afterRequest", function(event) {
+            if (event.detail.successful) {
+                overlay.style.display = "none";
+                FadeIn();
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "master.html" %}
+{% block content %}
+
+    <form id="schedule-form" hx-post="{% url 'SaveSchedule' %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-target="#schedules-table">
+        <main>
+            <div class="add-container">
+                    <h3 style="text-align: center; margin-bottom: 3%;">Add Schedule</h3>
+                    
+                    <label>Time Start</label>
+                    <input name="timestart" class="Edit-input"  type="time" value=""></td>
+                    <label>Time End</label>
+                    <input name="timeend" class="Edit-input"  type="time" value=""></td>
+                    <label>Day</label>
+                    <select name="day" id="course_select">
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                    </select>
+                    <label>Subject</label>
+                    <select name="subject_id" id="course_select">
+                        {% for subjects in select_subjects %}
+                            <option value="{{ subjects.id }}">{{ subjects.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <label>Teacher</label>
+                    <select name="teacher_id" id="course_select">
+                        {% for teachers in select_teachers %}
+                            <option value="{{ teachers.id }}">{{ teachers.firstname }} {{ teachers.lastname }}</option>
+                        {% endfor %}
+                    </select>
+                    
+                    <button id="AddSubj-btn" type="submit">Submit</button>
+                    <a hx-get="/Schedule" hx-target="#schedules-table"><button id="Cancel-btn" type="button">Cancel</button></a>
+            </div>
+        </main>
+    </form>
+
+    <script>
+        var Cancelbtn = document.getElementById('Cancel-btn');
+
+        Cancelbtn.addEventListener("click", function() {
+            overlay.style.display = "none";
+        });
+
+        var scheduleform = document.getElementById('schedule-form'); 
+        scheduleform.addEventListener("htmx:afterRequest", function(event) {
+            if (event.detail.successful) {
+                overlay.style.display = "none";
+                FadeIn();
+            }
+        });
+    </script>
+{% endblock %}

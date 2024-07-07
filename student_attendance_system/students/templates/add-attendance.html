@@ -1,0 +1,57 @@
+{% extends "master.html" %}
+{% block content %}
+
+    <form id="attendance-form" hx-post="{% url 'SaveAttendance' %}" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' hx-target="#attendance-table">
+        <main>
+            <div class="add-container">
+                <h3 style="text-align: center; margin-bottom: 3%;">Add Attendance</h3>
+                
+                <label>Student Name</label>
+                <select name="student_name" class="course_select">
+                    {% for student in select_students %}
+                        <option value="{{ student.id }}">{{ student.firstname }} {{ student.lastname }}</option>
+                    {% endfor %}
+                </select>
+                
+                <label>Subject & Schedule</label>
+                <select name="subject" class="course_select">
+                    {% for subject in select_subjects %}
+                        <option value="{{ subject.id }}">{{ subject.subject_FK.name }} ({{ subject.timestart|time }} - {{ subject.timeend|time }} )</option>
+                    {% endfor %}
+                </select>
+
+                <label>Date</label>
+                <input name="date" class="Edit-input" type="date">
+                
+                <label>Time</label>
+                <input name="time" class="Edit-input" type="time">
+                
+                <label>Status</label>
+                <select name="status" class="course_select">
+                    <option value="Present">Present</option>
+                    <option value="Absent">Absent</option>
+                    <option value="Late">Late</option>
+                </select>
+                    
+                <button id="AddSubj-btn" type="submit">Submit</button>
+                <a hx-get="/Attendance" hx-target="#attendance-table"><button id="Cancel-btn" type="button">Cancel</button></a>
+            </div>
+        </main>
+    </form>
+    <script>
+
+        var Cancelbtn = document.getElementById('Cancel-btn');
+
+        Cancelbtn.addEventListener("click", function() {
+            overlay.style.display = "none";
+        });
+
+        var attendanceform = document.getElementById('attendance-form'); 
+        attendanceform.addEventListener("htmx:afterRequest", function(event) {
+            if (event.detail.successful) {
+                overlay.style.display = "none";
+                FadeIn();
+            }
+        });
+    </script>
+{% endblock %}

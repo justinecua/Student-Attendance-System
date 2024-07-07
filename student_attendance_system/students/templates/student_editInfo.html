@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance System</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <form action="updateStudent/{{students_list.id}}" method="post">
+        {% csrf_token %}
+        <main>
+            <div class="student-container">
+                <div class="SC_Top">
+                    <h3>Edit Student Information</h3>
+                    <a href="/">Go Back</a>
+                </div>
+                
+                <table>
+                    <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Course</th>
+                    <th>Age</th>
+                    <th>Address</th>
+                    <th>Status</th>
+                    <th>Options</th>
+                    </tr>
+
+                    <tr>
+                   
+                    <td  class="td-edit2"></td>
+                    <td  class="td-edit2"><input name="name" class="Edit-input" type="text" value="{{students_list.name}}"></td>
+                    <td  class="td-edit2"><input name="course" class="Edit-input"  type="text" value="{{students_list.course}}"></td>
+                    <td  class="td-edit2"><input name="age" class="Edit-input"  type="text" value="{{students_list.age}}"></td>
+                    <td  class="td-edit2"><input name="address" class="Edit-input"  type="text" value="{{students_list.address}}"></td>
+                    <td  class="td-edit2">
+                        <select name="status" id="">
+                            <option value="{{students_list.status}}">{{students_list.status}}</option>
+                            {% if students_list.status == "Present" %}
+                                <option value="Late">Late</option>
+                                <option value="Absent">Absent</option>
+                            {% endif %}
+                            {% if students_list.status == "Late" %}
+                                <option value="Present">Present</option>
+                                <option value="Absent">Absent</option>
+                            {% endif %}
+                            {% if students_list.status == "Absent" %}
+                                <option value="Present">Present</option>
+                                <option value="Late">Late</option>
+                            {% endif %}
+                        </select>
+                    </td>
+                    <td>
+                        <button id="Update-btn" type="submit">Update</button>
+                    </td>
+                    </tr>
+                  
+                </table>
+            </div>
+          
+        </main>
+    </form>
+</body>
+</html>

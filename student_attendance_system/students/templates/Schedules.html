@@ -1,0 +1,67 @@
+{% extends "master.html" %}
+{% block content %}
+
+    <main id="schedules-table">
+        <div id="overlay"></div>
+        <div class="home-container">
+            <h2>Student Attendance System</h2>
+            <div class="HC-Container">
+                <div class="SC_Top">
+                    <div class="NavBar">
+                        <div><a href="/"><h2>Home &nbsp;</h2></a></div>
+                        <span>/</span>
+                        <div><a href="/Schedule"><h2>&nbsp; Schedule</h2></a></div>
+                    </div>
+                    <a hx-get="/addSchedule" hx-target="#overlay" ><button class="Add-btn" type="button">Add Schedule</button></a>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Time Start</th>
+                            <th>Time End</th>
+                            <th>Day</th>
+                            <th>Subject</th>
+                            <th>Teacher</th>
+                            {% comment %}
+                            <th>Options</th>
+                            {% endcomment %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            {% for x in sched_with_subj %}
+                            <td class="td-edit">{{ forloop.counter }}</td>
+                            <td class="td-edit">{{ x.timestart|time:"h:i A" }}</td>
+                            <td class="td-edit">{{ x.timeend|time:"h:i A" }}</td>
+                            <td class="td-edit">{{ x.days }}</td>
+                            <td class="td-edit">{{ x.subject_FK.name }}</td>
+                            <td class="td-edit">{{ x.teacher_FK.firstname }} {{ x.teacher_FK.lastname }}</td>
+                            {% comment %}
+                            <td>
+                                <a href="edit/{{x.id}}"><button id="Edit-btn"><img src="static/images/edit.png" alt="">Edit</button></a>
+                                <a href="#" onclick="confirmDelete('{{x.id}}')"><button id="Delete-btn"><img src="static/images/del.png">Delete</button></a>
+                            </td>
+                            {% endcomment %}
+                        </tr>
+                        {%endfor %}
+                    </tbody>
+                
+                    
+                </table>
+            </div>
+            <div class="Item-Counter">
+                <span>{{ count_sched }} items</span>
+            </div>
+        </div>
+    </main>
+    <script>
+        var Btn = document.querySelector('.Add-btn');
+        Btn.addEventListener("click", function() {
+            var overlay = document.getElementById("overlay");
+            overlay.style.display = "flex";
+        });
+    </script>
+{% endblock %}

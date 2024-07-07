@@ -1,0 +1,79 @@
+{% extends "master.html" %}
+{% block content %}
+
+    <main id="student-table">
+        <div id="overlay"></div>
+        <div class="home-container" style="overflow-x: auto;">
+            <div class="HC-Container">
+                <h2>Student Attendance System</h2>
+                <div class="SC_Top">
+                    <div class="NavBar">
+                        <div><a href="/"><h2>Home &nbsp;</h2></a></div>
+                        <span>/</span>
+                        <div><a href="/Students"><h2>&nbsp; Students</h2></a></div>
+                    </div>
+                    <a hx-get="/addStudent" hx-target="#overlay" ><button class="Add-btn" type="button">Add Student</button></a>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                        <th></th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Birthday</th>
+                        <th>Gender</th>
+                        <th>Address</th>
+                        <th>Contact Number</th>
+                        <th>Course</th>
+                        <th>Year Level</th>
+                        {% comment %}
+                        <th>Options</th>
+                        {% endcomment %}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            {% for x in students_list %}
+                        <td class="td-edit">{{ forloop.counter }}</td>
+                        <td class="td-edit">{{ x.firstname }}</td>
+                        <td class="td-edit">{{ x.lastname }}</td>
+                        <td class="td-edit">{{ x.birthday}}</td>
+                        <td class="td-edit">{{ x.gender}}</td>
+                        <td class="td-edit">{{ x.address}}</td>
+                        <td class="td-edit">{{ x.contactnumber}}</td>
+                        <td class="td-edit">{{ x.course_FK.course}}</td>
+                        <td class="td-edit">
+                            {% for levels in x.yearlevel_FK.all %}
+                                {{ levels.yearlevel }}
+                            {% endfor %}
+                        </td>
+                        {% comment %}
+                        <td>
+                            <a href="edit/{{x.id}}"><button id="Edit-btn"><img src="static/images/edit.png" alt="">Edit</button></a>
+                            <a href="#" onclick="confirmDelete('{{x.id}}')"><button id="Delete-btn"><img src="static/images/del.png">Delete</button></a>
+                        </td>
+                        {% endcomment %}
+                        </tr>
+                    </tbody>
+                    {%endfor %}
+                </table>
+            </div>
+
+            <div class="Item-Counter">
+                <span>{{ count_student }} items</span>
+            </div>
+            
+        </div>
+     
+    </main>
+
+    <script>
+        var Btn = document.querySelector('.Add-btn');
+        Btn.addEventListener("click", function() {
+            var overlay = document.getElementById("overlay");
+            overlay.style.display = "flex";
+        });
+    </script>
+{% endblock %}
